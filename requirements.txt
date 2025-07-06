@@ -1,0 +1,22 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+
+# Autenticación y seguridad
+passlib[bcrypt]
+python-jose
+email-validator
+
+# Base de datos
+sqlalchemy
+databases
+
+# Esquemas de validación
+pydantic
+
+# Correo y SMS 
+httpx
+
+# Para servir archivos estáticos y plantillas 
+aiofiles
+jinja2
