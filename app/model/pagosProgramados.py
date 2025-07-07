@@ -2,7 +2,7 @@ from sqlalchemy import Table, Column, Integer, String, DECIMAL, Date, Enum, TIME
 from sqlalchemy.sql import func
 from app.config.db import meta_data
 
-pagosprogramados = Table("pagosprogramados", meta_data,
+pagos_programados = Table("pagosprogramados", meta_data,
     Column("id", Integer, primary_key=True, unique=True),
     Column("usuario_id", Integer, ForeignKey("usuarios.id"), nullable=False),
     Column("categoria_id", Integer, ForeignKey("categorias.id"), nullable=False),
