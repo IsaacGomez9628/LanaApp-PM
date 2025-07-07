@@ -9,20 +9,20 @@ from app.schema.presupuesto_schema import PresupuestoSchema, PresupuestoSchemaOu
 
 presupuesto_router = APIRouter()
 
-@presupuesto_router.get("/lanaapp/presupuesto", response_model=List[PresupuestoSchemaOut])
+@presupuesto_router.get("/lanaapp/presupuesto", response_model=List[PresupuestoSchemaOut], tags=["Presupuesto"])
 def obtener_presupuestos():
     with engine.connect() as connection:
         result = connection.execute(presupuestos.select()).fetchall()
         return result
 
-@presupuesto_router.post("/lanaapp/presupuesto", status_code=HTTP_201_CREATED)
+@presupuesto_router.post("/lanaapp/presupuesto", status_code=HTTP_201_CREATED, tags=["Presupuesto"])
 def crear_presupuesto(data: PresupuestoSchema):
     nuevo_presupuesto = data.model_dump()
     with engine.connect() as connection:
         connection.execute(presupuestos.insert().values(nuevo_presupuesto))
     return {"mensaje": "Presupuesto creado correctamente"}
 
-@presupuesto_router.put("/lanaapp/presupuesto/{presupuesto_id}")
+@presupuesto_router.put("/lanaapp/presupuesto/{presupuesto_id}", tags=["Presupuesto"])
 def actualizar_presupuesto(presupuesto_id: int, data: PresupuestoSchema):
     valores = data.model_dump()
     with engine.connect() as connection:
@@ -35,7 +35,7 @@ def actualizar_presupuesto(presupuesto_id: int, data: PresupuestoSchema):
             raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="Presupuesto no encontrado")
     return {"mensaje": "Presupuesto actualizado correctamente"}
 
-@presupuesto_router.delete("/lanaapp/presupuesto/{presupuesto_id}")
+@presupuesto_router.delete("/lanaapp/presupuesto/{presupuesto_id}", tags=["Presupuesto"])
 def eliminar_presupuesto(presupuesto_id: int):
     with engine.connect() as connection:
         result = connection.execute(

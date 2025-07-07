@@ -8,7 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 user_router = APIRouter()
 
-@user_router.post("/lanaapp/user", status_code=HTTP_201_CREATED)
+@user_router.post("/lanaapp/user", status_code=HTTP_201_CREATED, tags=["Usuarios"])
 def create_user(data_user: UserSchema):
     print("Datos recibidos", data_user.model_dump())
     # nuestros usuarios creados se van a convertir en un diccionario para que los pueda leer data_user
@@ -29,7 +29,7 @@ def create_user(data_user: UserSchema):
     return Response(status_code=HTTP_201_CREATED)
 
 
-@user_router.get("/lanaapp/user/{user_id}", response_model = UserSchemaOut)
+@user_router.get("/lanaapp/user/{user_id}", response_model = UserSchemaOut, tags=["Usuarios"])
 def obtener_solo_un_usuario(user_id: int):
     try: 
         with engine.connect() as connection:
@@ -45,13 +45,13 @@ def obtener_solo_un_usuario(user_id: int):
         print ("No se encontro el usuario", e)
         raise HTTPException(status_code=500, detail=str(e))
     
-@user_router.get("/lanaapp/user", response_model=List[UserSchema])
+@user_router.get("/lanaapp/user", response_model=List[UserSchema], tags=["Usuarios"])
 def obtener_usuarios():
     with engine.connect() as connection:
         result = connection.execute(users.select()).fetchall()
         return result
 
-@user_router.put("/lanaapp/user/{user_id}")
+@user_router.put("/lanaapp/user/{user_id}", tags=["Usuarios"])
 def update_user(user_id: int, data: UserSchema):
     updated_data = data.model_dump()
     updated_data["password_hash"] = generate_password_hash(data.password, "pbkdf2:sha256:30", 30)
@@ -66,7 +66,7 @@ def update_user(user_id: int, data: UserSchema):
             raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="Usuario no encontrado")
     return {"mensaje": "Usuario actualizado correctamente"}
 
-@user_router.delete("/lanaapp/user/{user_id}")
+@user_router.delete("/lanaapp/user/{user_id}", tags=["Usuarios"])
 def delete_user(user_id: int):
     with engine.connect() as connection:
         result = connection.execute(users.delete().where(users.c.id == user_id))
