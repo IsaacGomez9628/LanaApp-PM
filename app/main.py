@@ -25,6 +25,8 @@ app.include_router(router)
 
 meta_data.create_all(engine)
 
+
+
 @app.get("/")
 def root():
     return {"message": "Hola desde Lana App"}
