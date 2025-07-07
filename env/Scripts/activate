@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="D:\LanaApp-PM\env"
+VIRTUAL_ENV="C:\Users\XB148\OneDrive\Documentos\Noveno_cuatrimestre\Programacion_movil\LanaApp-PM\env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

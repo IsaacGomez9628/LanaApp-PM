@@ -1,7 +1,28 @@
 from fastapi import FastAPI
+# si no se encuentra el modulo router asegurarse de que este dentro de la carpeta app, sino quitar el app
+from app.router.router import user
+from app.config.db import engine
+from sqlalchemy.exc import OperationalError
+from sqlalchemy import text
+from contextlib import asynccontextmanager
 
-app = FastAPI()
+
+async def lifespan(app: FastAPI):
+    try:
+        with engine.connect() as connection:
+            connection.execute(text("SELECT 1"))
+        print("Se pudo conectar a la base de datos")
+    except OperationalError as e:
+        print("Error en la base de datos", e)
+
+    # esto hace que corra la app
+    yield
+
+# Instancia de FastApi
+app = FastAPI(lifespan=lifespan)
+# este include_router agrega las rutas user que esta en la carpeta router en router.py
+app.include_router(user)
 
 @app.get("/")
-def read_root():
+def root():
     return {"message": "Hola desde Lana App"}
