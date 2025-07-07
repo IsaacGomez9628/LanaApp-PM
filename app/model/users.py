@@ -18,8 +18,7 @@ users = Table("usuarios", meta_data,
                 Column("fecha_creacion", TIMESTAMP, nullable = False, server_default=func.now()),
                 # onupdate=func.now() actualiza con la hora actual cada vez que se pone un update
                 Column("fecha_actualizacion", TIMESTAMP, nullable = False, onupdate = func.now(), server_default=func.now()));
-# Con esto se crean las tablas en la base de datos
 
-meta_data.create_all(engine)
+
 
 
